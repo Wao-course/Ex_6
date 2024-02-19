@@ -1,0 +1,13 @@
+{
+    "extends": "@tsconfig/node20/tsconfig.json",
+    "compilerOptions": {
+        "target": "es2018",
+        "jsx": "preserve",
+        "strict": true,
+        "esModuleInterop": true,
+        "lib": ["es2018", "esnext.asynciterable"]
+    },
+    
+    "include": ["src/**/*"],
+    "exclude": ["node_modules"]
+}
