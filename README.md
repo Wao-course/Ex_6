@@ -173,3 +173,5 @@ input AddressInput {
 
 - Create an Apollo GraphQL server that implement the the schema from exercise 4.1 using the database from the exercises in lecture 2.
 You may find some help here: <https://www.apollographql.com/docs/apollo-server/data/fetching-data>
+
+> The server is created ins the folder appolo-server, it seeds data using the mutation SeedData and then it is possible to query the data using the query orders. check graphQL

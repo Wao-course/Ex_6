@@ -2,33 +2,15 @@ import { ApolloServer, gql } from 'apollo-server-express';
 import express from 'express';
 import mongoose from 'mongoose';
 import { promises as fs } from 'fs';
+import { schema } from './orderModel.js';
 
 // Initialize Express app
 const app = express();
 
-// Connect to MongoDB
-mongoose.connect('mongodb://localhost:27017/Orders', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
 
-// Define Mongoose models
-const Order = mongoose.model('Order', {
-  material: String,
-  amount: Number,
-  currency: String,
-  price: Number,
-  timestamp: Date,
-  delivery: {
-    first_name: String,
-    last_name: String,
-    address: {
-      street_name: String,
-      street_number: String,
-      city: String,
-    },
-  },
-});
+
+const Order = mongoose.model('Order', schema);
+
 
 // Define GraphQL schema
 const typeDefs = gql`
@@ -127,7 +109,7 @@ const resolvers = {
         console.log("Existing orders deleted successfully");
 
         console.log("Attempting to read data file...");
-        let ordersData = await fs.readFile("MOCK_DATA_MATERIALS.json", "utf-8");
+        let ordersData = await fs.readFile("C:/Users/hashe/Documents/group/ex_6/appolo-server/graphql-server-example/MOCK_DATA_MATERIALS.json", "utf-8");
         console.log("Data file read successfully");
 
         console.log("Attempting to parse data...");
@@ -151,11 +133,31 @@ const resolvers = {
 // Create Apollo Server instance
 const server = new ApolloServer({ typeDefs, resolvers });
 
-// Apply middleware to Express app
-server.applyMiddleware({ app });
+async function startServer() {
+  await server.start();
 
-// Start the server
-const PORT = process.env.PORT || 4000;
-app.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}${server.graphqlPath}`);
-});
+  // Apply middleware to Express app
+  server.applyMiddleware({ app });
+
+  // Start the server
+  const PORT = process.env.PORT || 4000;
+  app.listen(PORT, () => {
+    console.log(`Server running at http://localhost:${PORT}${server.graphqlPath}`);
+  });
+}
+
+// Connect to MongoDB and start the server
+async function connectToDatabase() {
+  try {
+    await mongoose.connect('mongodb://root:example@localhost:27017/', { dbName: "orders" });
+    console.log("Connected to MongoDB");
+
+    await startServer();
+  } catch (error) {
+    console.error("Error connecting to MongoDB:", error);
+  }
+}
+
+// Call the function to connect to MongoDB and start the server
+connectToDatabase();
+
