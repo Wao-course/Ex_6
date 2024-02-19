@@ -77,8 +77,26 @@ Another site you may explore is the Star Wars service at <https://graphql.org/sw
 
 2. Use intellisense in GraphiQL to build some queries - you decide what you want to know. 
 
+## Exercise 3
 
-## Exercise 3 - Define a GraphQL schema
+### Lab 3.1
+
+Navigate to the "Introduction to Apollo Server" at <https://www.apollographql.com/docs/apollo-server/>
+
+- Follow the Get started tutorial by pressing the button at the botton of the page.
+-- Compare the the tutorial with the slide: Apollo Server and consider pros and cons of the differences
+- Read Schema basics <https://www.apollographql.com/docs/apollo-server/schema/schema>
+-- Move the schema definition (typeDefs) to separate file in a new graphql folder and import this module/file in index.ts
+-- Add a schma definition for a mutator that create a new book
+- Read Resolvers <https://www.apollographql.com/docs/apollo-server/data/resolvers>
+-- Move the resolvers to separate file in the graphql folder and import this module/file in index.ts
+-- Move the books array to a separate file in a new data folder, and import this in the resolver module
+-- Add a resolver to create a new book
+- Read Generating TS types for your schema <https://www.apollographql.com/docs/apollo-server/workflow/generate-types>
+-- Try to use this to make your resolvers type safe
+
+
+## Exercise 4 - Define a GraphQL schema
 
 ### Lab 3.1
 
@@ -88,38 +106,70 @@ You can write this schema in any editor (you can install an extension to Visual 
 
 > The schema is as follows:
 ```graphql
-# Define the Room type
-type Room {
+type Order {
   id: ID!
-  number: String!
-  type: String!
-  capacity: Int!
+  material: String!
+  amount: Int!
+  currency: String!
   price: Float!
-  booked: Boolean!
+  timestamp: String!
+  delivery: Delivery!
 }
 
-# Define the Booking type
-type Booking {
-  id: ID!
-  roomId: ID!
-  guestName: String!
-  startDate: String!
-  endDate: String!
+type Delivery {
+  first_name: String!
+  last_name: String!
+  address: Address!
 }
 
-# Define the Query type
+type Address {
+  street_name: String!
+  street_number: String!
+  city: String!
+}
+
 type Query {
-  # Query to retrieve all available rooms
-  availableRooms: [Room!]!
+  orders: [Order!]!
+  order(id: ID!): Order
 }
 
-# Define the Mutation type
 type Mutation {
-  # Mutation to book a room
-  bookRoom(roomId: ID!, guestName: String!, startDate: String!, endDate: String!): Booking!
+  createOrder(input: OrderInput!): Order!
+  updateOrder(id: ID!, input: OrderInput!): Order!
+  deleteOrder(id: ID!): Order!
 }
+
+input OrderInput {
+  material: String!
+  amount: Int!
+  currency: String!
+  price: Float!
+  timestamp: String!
+  delivery: DeliveryInput!
+}
+
+input DeliveryInput {
+  first_name: String!
+  last_name: String!
+  address: AddressInput!
+}
+
+input AddressInput {
+  street_name: String!
+  street_number: String!
+  city: String!
+}
+
 ```
-- We have a Room type representing a hotel room, with fields such as id, number, type, capacity, price, and booked.
-- We have a Booking type representing a booking made by a guest, with fields such as id, roomId, guestName, startDate, and endDate.
-- We have a Query type with a single field availableRooms, which returns a list of available rooms.
-- We have a Mutation type with a single field bookRoom, which allows booking a room by providing the roomId, guestName, startDate, and endDate.
+- We define a Order type representing an order with fields id, material, amount, currency, price, timestamp, and delivery.
+- The Delivery type represents the delivery information with fields first_name, last_name, and address.
+- The Address type represents the address with fields street_name, street_number, and city.
+- We define queries to fetch orders (orders) and a single order by its ID (order).
+- We define mutations to create (createOrder), update (updateOrder), and delete (deleteOrder) orders.
+- Input types OrderInput, DeliveryInput, and AddressInput are defined for creating and updating orders, which are used as arguments in mutations.
+
+
+### Lab 4.2 - Create an Apollo GraphQL server
+
+- Create an Apollo GraphQL server that implement the the schema from exercise 4.1 using the database from the exercises in lecture 2.
+You may find some help here: <https://www.apollographql.com/docs/apollo-server/data/fetching-data>
