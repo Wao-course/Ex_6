@@ -100,9 +100,7 @@ Navigate to the "Introduction to Apollo Server" at <https://www.apollographql.co
 
 ### Lab 3.1
 
-Define a GraphQL schema for a hotel booking system. Using this schema, it should be possible to query for available rooms and specify some properties for the required room.
-And it should also be possible to book a room.
-You can write this schema in any editor (you can install an extension to Visual Studio Code to get intellisence for GraphQL's SDL), but you can also use Apollo studio: <https://www.apollographql.com/docs/studio/getting-started/> they have a free plan you can us.
+Define a GraphQL schema for the api from the exercises in lecture 2. You can write this schema in any editor (you can install an extension to Visual Studio Code to get intellisence for GraphQL's SDL), but you can also use Apollo studio: https://www.apollographql.com/docs/studio/getting-started/ they have a free plan you can us.
 
 > The schema is as follows:
 ```graphql
